@@ -1,3 +1,5 @@
+# Deployment with deploy hook
+# alternative, and perhaps a more reliable option is to use Render Deploy Hook
 name: Trigger Render Deployment
 on:
   push:
@@ -9,8 +11,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger deployment
-        uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
-        with:
-          serviceId: ${{ secrets.RENDER_SERVICE_ID }}
-          apiKey: ${{ secrets.RENDER_API_KEY }}
-          multipleDeployment: false #optional, default true
+        run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
+##hook = https://api.render.com/deploy/srv-d13g0r3uibrs7387p4ug?key=xTE0rP2TGVI
+#
+#
+# this workflow was copied from the github marketplace: https://github.com/marketplace/actions/render-deployment
+# and modified to use secrets for serviceId and apiKey
+
+# name: Trigger Render Deployment
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   main:
+#     name: Deploy to Render
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Trigger deployment
+#         uses: sws2apps/render-deployment@main #consider using pin for dependabot auto update
+#         with:
+#           serviceId: ${{ secrets.RENDER_SERVICE_ID }} #srv-d13g0r3uibrs7387p4ug got from https://dashboard.render.com/web/srv-d13g0r3uibrs7387p4ug
+#           apiKey: ${{ secrets.RENDER_API_KEY }} #rnd_LTHr1BjvzGgJ8wJiIO3e4jUeNSHC
+#           multipleDeployment: false #optional, default true
