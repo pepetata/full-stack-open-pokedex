@@ -1,4 +1,3 @@
-// filepath: tests-e2e/pokedex.test.js
 import { test, expect } from "@playwright/test";
 
 test.describe("Pokedex", () => {
@@ -10,5 +9,11 @@ test.describe("Pokedex", () => {
         "Pokémon and Pokémon character names are trademarks of Nintendo."
       )
     ).toBeVisible();
+  });
+
+  test("can navigate to ivysaur page and see chlorophyll", async ({ page }) => {
+    await page.goto("");
+    await page.click('a.list-item[href="/pokemon/ivysaur"]');
+    await expect(page.getByText("chlorophyll")).toBeVisible();
   });
 });
