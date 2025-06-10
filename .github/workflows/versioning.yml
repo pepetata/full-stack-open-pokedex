@@ -1,0 +1,58 @@
+# example 1: on push to master
+# When it runs: Every time you push to main (or master).
+# Use if: You want to bump the version and create a tag on every push to the main branch (including merges and direct pushes).
+name: Bump version
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@v1 # Don't use @master or @v1 unless you're happy to test the latest version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # if you don't want to set write permissions use a PAT token
+
+# Example 2: On merge to master/main from a pull request (recommended)
+# When it runs: Only when a pull request is merged into main (or master).
+# Use if: You want to bump the version and create a tag only when a PR is merged (not for every push).
+# Which should you use?
+# For most teams, Example 2 is recommended because:
+
+# It avoids creating tags for every push (including WIP or fixup commits).
+# It only bumps the version when a PR is merged, which is usually when you want to mark a new release.
+
+# name: Bump version
+# on:
+#   pull_request:
+#     types:
+#       - closed
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     if: github.event.pull_request.merged == true
+#     runs-on: ubuntu-22.04
+#     permissions:
+#       contents: write
+#     steps:
+#       - uses: actions/checkout@v4
+#         with:
+#           ref: ${{ github.event.pull_request.merge_commit_sha }}
+#           fetch-depth: "0"
+
+#       - name: Bump version and push tag
+#         uses: anothrNick/github-tag-action@v1
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           TAG_PREFIX: v
