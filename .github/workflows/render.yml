@@ -5,9 +5,9 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize]
+  # pull_request:
+  #   branches: [main]
+  #   types: [opened, synchronize]
 
 jobs:
   main:
@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger deployment
+        if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{ secrets.RENDER_SERVICE_ID }}?key=${{ secrets.RENDER_API_KEY }}
 ##hook = https://api.render.com/deploy/srv-d13g0r3uibrs7387p4ug?key=xTE0rP2TGVI
 #
