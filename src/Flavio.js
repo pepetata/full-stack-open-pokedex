@@ -1,2 +1,2 @@
 // simple test for git
-console.log('Flavio -  previous to version 1.08');
+console.log("Flavio -  version 2.0");
